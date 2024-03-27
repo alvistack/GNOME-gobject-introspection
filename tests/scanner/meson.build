@@ -4,6 +4,12 @@ if test_env_common_path.length() > 0
   scanner_test_env.prepend('PATH', test_env_common_path)
 endif
 
+# Needed on Windows for Python 3.8.x+ if project is configured with
+# --pkg-config-path or -Dpkg_config_path
+if pkg_config_path_win.length() > 0
+  scanner_test_env.prepend('PKG_CONFIG_PATH', pkg_config_path_win)
+endif
+
 scanner_test_files = [
   'test_ccompiler.py',
   'test_shlibs.py',
@@ -148,7 +154,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(source_root, 'gobject-introspection-tests'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += typedef_gir
 
@@ -187,7 +194,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(source_root, 'gobject-introspection-tests'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += bar_gir
 
@@ -225,7 +233,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(source_root, 'gobject-introspection-tests'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += sletter_gir
 
@@ -263,7 +272,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(meson.current_source_dir(), '..'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += warnlib_gir
 
@@ -303,7 +313,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(meson.current_source_dir(), '..'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += utility_gir
 
@@ -342,7 +353,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(source_root, 'gobject-introspection-tests'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += gtkfrob_gir
 
@@ -380,7 +392,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '-I', join_paths(source_root, 'gobject-introspection-tests'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += gettype_gir
 
@@ -408,7 +421,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '--symbol-filter-cmd=' + python_path + ' ' +  join_paths(meson.current_source_dir(), 'symbolfilter.py'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += symbolfilter_gir
 
@@ -436,7 +450,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '--identifier-filter-cmd=' + python_path + ' "' +  join_paths(meson.current_source_dir(), 'identfilter.py' + '"'),
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += identfilter_gir
 
@@ -464,7 +479,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       '--header-only',
       extra_giscanner_args,
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
   test_girs += headeronly_gir
 
@@ -515,7 +531,8 @@ if (glib_dep.type_name() == 'pkgconfig' and
       extra_giscanner_args,
       ] + regress_scanner_cairo_args + [
       '@INPUT@',
-    ]
+    ],
+    env: tests_scanner_run_env,
   )
 
   # The reference gir is generated with cairo support, so we can only compare
@@ -617,6 +634,7 @@ if has_girdoctool and glib_dep.type_name() == 'pkgconfig'
         '--templates-dir=' + join_paths(meson.current_source_dir(), '../../giscanner/doctemplates'),
         '@INPUT@', '-o', '@OUTPUT@',
       ],
+      env: tests_scanner_run_env,
     )
 
     if cairo_deps_found
@@ -644,6 +662,7 @@ if has_girdoctool and glib_dep.type_name() == 'pkgconfig'
       '--add-include-path=' + meson.current_build_dir(),
       '--write-sections-file',
       '@INPUT@', '-o', '@OUTPUT@'],
+    env: tests_scanner_run_env,
   )
 
   if cairo_deps_found
