@@ -1,0 +1,316 @@
+Source: gobject-introspection
+Section: devel
+Priority: optional
+Standards-Version: 4.5.0
+Maintainer: Wong Hoi Sing Edison <hswong3i@pantarei-design.com>
+Homepage: https://github.com/GNOME/gobject-introspection
+Vcs-Browser: https://github.com/alvistack/GNOME-gobject-introspection
+Vcs-Git: https://github.com/alvistack/GNOME-gobject-introspection.git
+Build-Depends:
+ bison,
+ debhelper,
+ debhelper-compat (= 10),
+ dh-sequence-python3,
+ flex,
+ gir1.2-glib-2.0-dev (>= 2.80.0) <!nogir>,
+ gobject-introspection (>= 1.78.1-17~) <cross !nogir>,
+ libcairo2-dev,
+ libelf-dev,
+ libelf-dev:native,
+ libffi-dev (>= 3.4),
+ libglib2.0-dev (>= 2.80.0),
+ libpython3-dev,
+ libtool,
+ meson (>= 0.60.0),
+ pkgconf,
+ python3-debian:native,
+ python3-dev:any,
+ python3-docutils <!nodoc>,
+ python3-mako:native,
+ python3-markdown:native,
+ python3-setuptools,
+ python3-rnc2rng,
+ python3:native,
+ qemu-user <cross>,
+Build-Depends-Indep:
+ gtk-doc-tools,
+ libglib2.0-doc (>= 2.80.0),
+
+Package: libgirepository-1.0-1
+Section: libs
+Architecture: any
+Provides: libgirepository-1.0-1-with-${local:libffiN} (= ${source:Version}),
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+Breaks: libcjs0 (<< 4.8.2-1+b1),
+        libgjs0g (<< 1.68.4-1+b1),
+        libglib-object-introspection-perl (<< 0.049-1+b2),
+        python-gi (<< 3.42.0-1+b1),
+        python3-gi (<< 3.42.0-1+b1),
+        ruby-gobject-introspection (<< 3.4.3-1+b2),
+Multi-Arch: same
+Description: Library for handling GObject introspection data (runtime library)
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ GObject Introspection contains tools to generate and handle the
+ introspection data.
+ .
+ This package contains a C library for handling the introspection data.
+
+Package: libgirepository1.0-dev
+Build-Profiles: <!nogir>
+Section: libdevel
+Architecture: any
+Depends: gir1.2-freedesktop (= ${source:Version}),
+         gir1.2-freedesktop-dev (= ${source:Version}),
+         gir1.2-girepository-2.0 (= ${source:Version}),
+         gir1.2-girepository-2.0-dev (= ${source:Version}),
+         gir1.2-glib-2.0 (>= 2.80.0),
+         gir1.2-glib-2.0-dev (>= 2.80.0),
+         gobject-introspection (= ${source:Version}),
+         libffi-dev (>= 3.4),
+         libgirepository-1.0-1 (= ${source:Version}),
+         libgirepository-1.0-dev (= ${source:Version}),
+         libglib2.0-dev (>= 2.80.0),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Suggests: libgirepository1.0-doc,
+Description: Library for handling GObject introspection data (complete development files)
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ This metapackage depends on everything needed to use GObject-Introspection.
+ It also provides GLib-2.0.gir at its traditional location in /usr/share,
+ for compatibility with older code-generation tools which do not read GIR XML
+ from /usr/lib/${local:DEB-HOST-MULTIARCH}/gir-1.0.
+ .
+ Please consider build-depending on gobject-introspection and the appropriate
+ gir1.2-*-dev packages in preference to this package, to allow for
+ cross-compilation.
+
+Package: libgirepository-1.0-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: gobject-introspection (= ${source:Version}),
+         libffi-dev (>= 3.4),
+         libgirepository-1.0-1 (= ${source:Version}),
+         libglib2.0-dev (>= 2.80.0),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Suggests: libgirepository1.0-doc,
+Breaks: libgirepository1.0-dev (<< 1.78.1-7~),
+Replaces: libgirepository1.0-dev (<< 1.78.1-7~),
+Description: Library for handling GObject introspection data (development files)
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ GObject Introspection contains tools to generate and handle the
+ introspection data.
+ .
+ This package contains the headers for the C library for handling the
+ introspection data.
+
+Package: libgirepository1.0-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends},
+Recommends: libglib2.0-doc,
+Multi-Arch: foreign
+Description: Library for handling GObject introspection data (documentation)
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ GObject Introspection contains tools to generate and handle the
+ introspection data.
+ .
+ This package contains the documentation for the C library for handling the
+ introspection data.
+
+# gobject-introspection is installed for the host architecture if
+# cross-compiling, and it builds and runs a host executable, the "dumper".
+# If python3 is of the same architecture (typical during native compilation)
+# then the ${DEB_HOST_GNU_TYPE}-g-ir-scanner wrapper script runs the
+# dumper directly.
+# If python3 is of a different architecture (typically the build
+# architecture) then ${DEB_HOST_GNU_TYPE}-g-ir-scanner might need to
+# run the dumper via qemu-user, depending on whether binfmt-misc was set up
+# (which we cannot express as a dependency).
+# This only works for the same OS (in practice Linux).
+Package: gobject-introspection
+Multi-Arch: same
+Architecture: any
+Depends: binutils-${local:DEB-HOST-GNU-TYPE-DASHES}:any,
+         gcc-${local:DEB-HOST-GNU-TYPE-DASHES},
+         gobject-introspection-bin (= ${source:Version}),
+         gobject-introspection-bin-${local:DEB-HOST-ARCH-OS} (= ${source:Version}),
+         libgirepository-1.0-1 (= ${source:Version}),
+         libglib2.0-dev (>= 2.80.0),
+         pkgconf,
+         python3 | qemu-user [linux-any] | qemu-user-static [linux-any],
+         ${misc:Depends},
+         ${python3:Depends},
+         ${shlibs:Depends},
+Provides: dh-sequence-gir,
+Breaks: libgirepository-1.0-dev (<< 1.78.1-9~),
+        libgirepository1.0-dev (<< 1.78.1-7~),
+Replaces: libgirepository-1.0-dev (<< 1.78.1-9~),
+          libgirepository1.0-dev (<< 1.78.1-7~),
+Description: Generate interface introspection data for GObject libraries
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ GObject Introspection contains tools to generate and handle the
+ introspection data.
+ .
+ This package contains tools for extracting introspection data from libraries
+ and transforming it to different formats. The versions of these tools with
+ architecture name prefixes, such as ${local:DEB-HOST-GNU-TYPE}-g-ir-scanner,
+ can be used during cross-compilation.
+ .
+ Although this package includes the pkg-config metadata for both the tools
+ and the libgirepository-1.0 library, it does not guarantee to provide the
+ library itself (currently it does provide the libgirepository-1.0.so
+ symlink as a workaround for a Meson issue, but this should not be
+ relied on). Packages that explicitly link to libgirepository-1.0.so,
+ mainly dynamic language bindings like GJS and PyGIi, will need to
+ build-depend on libgirepository-1.0-dev in addition to this package.
+
+Package: gobject-introspection-bin
+Architecture: any
+Multi-Arch: foreign
+Depends: build-essential,
+         libdpkg-perl,
+         libgirepository-1.0-1 (= ${source:Version}),
+         python3-mako,
+         python3-markdown,
+         python3-setuptools,
+         ${misc:Depends},
+         ${perl:Depends},
+         ${python3:Depends},
+         ${shlibs:Depends},
+Provides: gobject-introspection-bin-${local:DEB-HOST-ARCH-OS} (= ${source:Version}),
+Breaks: gobject-introspection (<< 1.78.1-7~),
+        libgirepository1.0-dev (<< 1.78.1-7~),
+Replaces: gobject-introspection (<< 1.78.1-7~),
+          libgirepository1.0-dev (<< 1.78.1-7~),
+Description: Executables for gobject-introspection
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ This package contains the implementation for various tools.
+ Please do not depend on this package directly: use gobject-introspection
+ instead.
+
+Package: gir1.2-girepository-2.0
+Build-Profiles: <!nogir>
+Architecture: any
+Section: introspection
+Depends: ${gir:Depends},
+         ${misc:Depends},
+Breaks: gir1.2-glib-2.0 (<< 1.78.1-7~),
+        gjs (<< 1.78.1-2~),
+        pygobject (<< 3.46.0-3~),
+Replaces: gir1.2-glib-2.0 (<< 1.78.1-7~),
+Multi-Arch: same
+Description: Introspection data for GIRepository library
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ This package contains the introspection data for the GIRepository library,
+ which can be used to manipulate the search path used by language bindings
+ and load introspection data.
+
+Package: gir1.2-girepository-2.0-dev
+Build-Profiles: <!nogir>
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: gir1.2-girepository-2.0 (= ${source:Version}),
+         ${gir:Depends},
+         ${misc:Depends},
+Provides: ${gir:Provides},
+Breaks: libgirepository-1.0-1 (<< 1.78.1-3~),
+        libgirepository1.0-dev (<< 1.78.1-7~),
+Replaces: libgirepository1.0-dev (<< 1.78.1-7~),
+Description: GIR XML for GIRepository library
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ This package contains the introspection data for the GIRepository
+ library, in the GIR XML format used to generate bindings for static languages
+ like C++, D and Haskell.
+
+Package: gir1.2-freedesktop
+Build-Profiles: <!nogir>
+Architecture: any
+Section: introspection
+Depends: ${gir:Depends},
+         ${misc:Depends},
+Provides: ${gir:Provides},
+Multi-Arch: same
+Description: Introspection data for some FreeDesktop components
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ GObject Introspection contains tools to generate and handle the
+ introspection data.
+ .
+ This package contains small pieces of introspection data for the Cairo,
+ FontConfig, FreeType, GL, and some XOrg libraries, in the typelib format
+ used to generate bindings for dynamic languages like JavaScript and Python.
+ They are far from complete and only include what is necessary for other
+ introspection packages to work properly.
+
+Package: gir1.2-freedesktop-dev
+Build-Profiles: <!nogir>
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: gir1.2-freedesktop (= ${source:Version}),
+         ${gir:Depends},
+         ${misc:Depends},
+Provides: ${gir:Provides},
+Breaks: libgirepository-1.0-1 (<< 1.78.1-3~),
+        libgirepository1.0-dev (<< 1.78.1-7~),
+Replaces: libgirepository1.0-dev (<< 1.78.1-7~),
+Description: GIR XML for some FreeDesktop components
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ This package contains small pieces of introspection data for the Cairo,
+ FontConfig, FreeType, GL, and some XOrg libraries, in the GIR XML format
+ used to generate bindings for static languages like C++, D and Haskell.
+ They are far from complete and only include what is necessary for other
+ introspection packages to work properly.

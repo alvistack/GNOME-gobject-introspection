@@ -1,0 +1,12 @@
+usr/lib/*/girepository-*/DBus-1.0.typelib
+usr/lib/*/girepository-*/DBusGLib-1.0.typelib
+usr/lib/*/girepository-*/GL-1.0.typelib
+usr/lib/*/girepository-*/Vulkan-1.0.typelib
+usr/lib/*/girepository-*/cairo-1.0.typelib
+usr/lib/*/girepository-*/fontconfig-2.0.typelib
+usr/lib/*/girepository-*/freetype2-2.0.typelib
+usr/lib/*/girepository-*/libxml2-2.0.typelib
+usr/lib/*/girepository-*/xfixes-4.0.typelib
+usr/lib/*/girepository-*/xft-2.0.typelib
+usr/lib/*/girepository-*/xlib-2.0.typelib
+usr/lib/*/girepository-*/xrandr-1.3.typelib

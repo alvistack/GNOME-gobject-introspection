@@ -1,0 +1,8 @@
+debian/*-gobject-introspection.ini usr/share/meson/cross
+debian/cross-tools/*-g-ir-* usr/bin
+debian/cross-tools/deb-can-run-* usr/lib/*/gobject-introspection
+usr/bin/g-ir-compiler usr/lib/*/gobject-introspection
+usr/bin/g-ir-generate usr/lib/*/gobject-introspection
+usr/bin/g-ir-inspect usr/lib/*/gobject-introspection
+usr/lib/*/libgirepository-*.so
+usr/lib/*/pkgconfig

@@ -1,0 +1,13 @@
+debian/dh_girepository /usr/bin
+debian/deb-elf-get-needed /usr/libexec/gobject-introspection-bin
+debian/gir.pm /usr/share/perl5/Debian/Debhelper/Sequence
+usr/bin/g-ir-annotation-tool
+usr/bin/g-ir-doc-tool
+usr/bin/g-ir-scanner
+usr/lib/*/gobject-introspection/giscanner/*.py
+usr/lib/*/gobject-introspection/giscanner/*.so
+usr/lib/*/gobject-introspection/giscanner/doctemplates
+usr/share/aclocal
+usr/share/gir-*/gir-1.2.rnc
+usr/share/gobject-introspection-*
+usr/share/man
